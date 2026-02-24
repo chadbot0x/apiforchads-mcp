@@ -1,0 +1,199 @@
+{
+  "serverInfo": {
+    "name": "API for Chads",
+    "version": "1.26.0",
+    "description": "MCP server for AI agents — real-time crypto prices (Chainlink + Binance), Polymarket CLOB orderbook data, AI-powered web research with citations, and JS-rendered web scraping. Pay per request via x402 Solana micropayments or API key. No signup, no subscriptions.",
+    "homepage": "https://apiforchads.com",
+    "repository": "https://github.com/chadbot0x/apiforchads-mcp",
+    "documentation": "https://apiforchads.com/docs",
+    "license": "MIT",
+    "author": "chadbot0x",
+    "categories": ["finance", "crypto", "web-scraping", "research", "prediction-markets"],
+    "tags": ["mcp", "crypto", "polymarket", "x402", "solana", "ai-agents", "web-rendering", "research", "chainlink", "defi"]
+  },
+  "authentication": {
+    "required": false,
+    "schemes": ["x402", "bearer"],
+    "description": "Free tier available. Paid via x402 Solana micropayments (automatic) or API key (email chadbot0x@proton.me for free key with 1000 requests)."
+  },
+  "tools": [
+    {
+      "name": "get_crypto_price",
+      "description": "Get real-time cryptocurrency price from Chainlink decentralized oracles and Binance. Returns price from both sources with timestamp. Supports BTC, ETH, SOL, MATIC, AVAX, LINK, DOT, ADA, and 20+ assets.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "asset": {
+            "type": "string",
+            "description": "Crypto asset symbol (e.g. BTC, ETH, SOL, MATIC, AVAX, LINK)"
+          }
+        },
+        "required": ["asset"]
+      }
+    },
+    {
+      "name": "get_prediction_market",
+      "description": "Get Polymarket CLOB (Central Limit Order Book) best bid/ask prices for a prediction market. Returns real executable prices, spread, depth, and token IDs for programmatic trading. Much more accurate than Gamma API's stale outcomePrices.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "description": "Polymarket market slug (e.g. 'will-bitcoin-hit-100k-in-2026')"
+          }
+        },
+        "required": ["slug"]
+      }
+    },
+    {
+      "name": "quick_research",
+      "description": "Run a quick web-grounded research query (~20 seconds). Uses Gemini Flash with Google Search grounding for fast, cited answers. Returns a 400-600 word report with source URLs. Great for fact-checking, current events, and quick data lookups.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Research question or topic (5-2000 chars)"
+          }
+        },
+        "required": ["query"]
+      }
+    },
+    {
+      "name": "deep_research",
+      "description": "Run a deep autonomous research investigation (~5 minutes). Uses Gemini Deep Research Pro to search multiple sources, cross-reference information, and produce comprehensive cited reports. Returns 2000-5000 word reports with full citations. Best for complex topics requiring thorough analysis.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Research question or topic (5-2000 chars)"
+          }
+        },
+        "required": ["query"]
+      }
+    },
+    {
+      "name": "render_webpage",
+      "description": "Render a web page with headless Chromium and extract content as markdown, text, or HTML. Handles JavaScript-rendered SPAs and dynamic pages that simple HTTP fetchers can't read. Includes anti-SSRF protection.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Full URL to render (https:// required)"
+          },
+          "format": {
+            "type": "string",
+            "enum": ["markdown", "text", "html"],
+            "default": "markdown",
+            "description": "Output format for extracted content"
+          },
+          "max_chars": {
+            "type": "integer",
+            "default": 50000,
+            "description": "Maximum characters to return (100-200000)"
+          }
+        },
+        "required": ["url"]
+      }
+    },
+    {
+      "name": "screenshot_webpage",
+      "description": "Capture a full-page or viewport screenshot of any web page as a PNG image (base64 encoded). Useful for visual verification, monitoring, and archiving.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Full URL to screenshot (https:// required)"
+          },
+          "full_page": {
+            "type": "boolean",
+            "default": true,
+            "description": "True for full page screenshot, False for viewport only"
+          }
+        },
+        "required": ["url"]
+      }
+    },
+    {
+      "name": "extract_from_webpage",
+      "description": "Extract specific elements from a web page using CSS selectors. Renders with Chromium first, then extracts matching elements. Returns content in text, markdown, or HTML format.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Full URL to render (https:// required)"
+          },
+          "selector": {
+            "type": "string",
+            "description": "CSS selector (e.g. 'h1', '.article-body', '#main-content', 'table.data')"
+          },
+          "format": {
+            "type": "string",
+            "enum": ["text", "markdown", "html"],
+            "default": "text",
+            "description": "Output format for extracted content"
+          }
+        },
+        "required": ["url", "selector"]
+      }
+    },
+    {
+      "name": "webpage_to_pdf",
+      "description": "Convert any web page to a PDF document (base64 encoded). Renders with Chromium for accurate layout including CSS and JavaScript content.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "Full URL to convert to PDF (https:// required)"
+          }
+        },
+        "required": ["url"]
+      }
+    },
+    {
+      "name": "list_services",
+      "description": "List all available API for Chads services with endpoints, descriptions, and x402 pricing. Returns the complete service catalog including base URLs for direct REST API access.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  ],
+  "resources": [
+    {
+      "uri": "apiforchads://catalog",
+      "name": "Service Catalog",
+      "description": "Complete catalog of all API for Chads services, endpoints, pricing, and authentication methods.",
+      "mimeType": "application/json"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "market_analysis",
+      "description": "Analyze a prediction market using real CLOB data. Gets current prices, spread, and depth, then provides trading insight.",
+      "arguments": [
+        {
+          "name": "market_slug",
+          "description": "Polymarket market slug to analyze",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "crypto_report",
+      "description": "Generate a comprehensive crypto asset report combining real-time price data with web research.",
+      "arguments": [
+        {
+          "name": "asset",
+          "description": "Crypto asset symbol (e.g. BTC, ETH, SOL)",
+          "required": true
+        }
+      ]
+    }
+  ]
+}

@@ -12,6 +12,7 @@
 </p>
 
 <p align="center">
+  <a href="https://smithery.ai/servers/chadbot0x/apiforchads"><img src="https://smithery.ai/badge/chadbot0x/apiforchads" alt="Smithery"></a>
   <img src="https://img.shields.io/badge/MCP-compatible-blue" alt="MCP Compatible">
   <img src="https://img.shields.io/badge/payment-x402_Solana-purple" alt="x402 Solana">
   <img src="https://img.shields.io/badge/tools-9-green" alt="9 Tools">
